@@ -17,7 +17,7 @@ shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
-HISTFILESIZE=20000
+HISTFILESIZE=50000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -63,14 +63,14 @@ fi
 # fi
 # unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# If this is an xterm set the title to user@host:dir debian
+# case "$TERM" in
+# xterm*|rxvt*)
+#     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#     ;;
+# *)
+#     ;;
+# esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -115,11 +115,29 @@ alias ncspot='flatpak run io.github.hrkfdn.ncspot'
 alias ollama_stop='systemctl stop ollama'
 alias ollama_start='systemctl start ollama'
 alias img='chafa'
-
-
-#parse_git_branch() { git rev-parse --is-inside-work-tree > /dev/null 2>&1 && echo "git:$(git symbolic-ref --short HEAD)" || exit 1; }
-#PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
-
+alias open='xdg-open'
+# ------------------- aliases --------------------- #
+# ------------------- functions ------------------- #
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+# Function to check if a command is installed
+is_installed() {
+    if command_exists "$1"; then
+        echo "$1 is installed."
+    else
+        echo "$1 is not installed."
+    fi
+}
+# Function to check if a package is installed using dpkg
+is_installed_dpkg() {
+    if dpkg -l | grep -q "^ii  $1 "; then
+        echo "$1 is installed."
+    else
+        echo "$1 is not installed."
+    fi
+}
 parse_git_branch() {
   # Verifica se o comando git existe antes de tudo
   command -v git >/dev/null 2>&1 || return
@@ -127,6 +145,10 @@ parse_git_branch() {
   # Se estiver em um repositório git, mostra o branch. Caso contrário, não mostra nada.
   git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo "git:$(git symbolic-ref --short HEAD)"
 }
+
+#parse_git_branch() { git rev-parse --is-inside-work-tree > /dev/null 2>&1 && echo "git:$(git symbolic-ref --short HEAD)" || exit 1; }
+#PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
+
 
 PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
 #-------------------------Shell-Mommy----------------------------#
