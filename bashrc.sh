@@ -239,3 +239,6 @@ parse_git_branch() {
 
 # Set the prompt to show user, host, current directory, and git branch if available
 PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
+
+
+source ./bash_scripts/transient.sh
