@@ -176,7 +176,6 @@ to_lowercase() {
   echo "$output_string"
 }
 
-
 normalize_filenames() {
   local directory="${1:-.}" # Takes the first argument as the directory, or uses the current directory if none is provided
   local log_file="names_log.csv" # Name of the log file
@@ -229,6 +228,8 @@ normalize_filenames() {
   echo "Normalization complete."
 }
 
+
+# =========================== Custom Prompt =================================== #
 parse_git_branch() {
   # Verifica se o comando git existe antes de tudo
   command -v git >/dev/null 2>&1 || return
@@ -237,8 +238,20 @@ parse_git_branch() {
   git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo "git:$(git symbolic-ref --short HEAD)"
 }
 
+function lastcommand {
+    history | tail -1 | cut -c 8-
+}
+function deleteprompt {
+    n=${PS1@P}
+    n=${n//[^$'\n']}
+    n=${#n}
+    tput cuu $((n + 1))
+    tput ed
+}
+
+PS0='\[$(deleteprompt)\]\$ $(lastcommand)\n\[${PS1:0:$((EXPS0=1,0))}\]'
+PROMPT_COMMAND='[ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'
 # Set the prompt to show user, host, current directory, and git branch if available
 PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
 
-
-source ./bash_scripts/transient.sh
+# =========================== Custom Prompt end =============================== #
