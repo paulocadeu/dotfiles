@@ -3,11 +3,13 @@
 # for examples
 
 # If not running interactively, don't do anything
+#[[ -n $PS1 ]] || return
 case $- in
     *i*) ;;
       *) return;;
 esac
 
+# ------------------------- History settings ---------------------------------- #
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -18,6 +20,8 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=50000
+
+# ------------------------- Terminal config ---------------------------------- #
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -106,7 +110,7 @@ fi
 export PATH
 
 # ------------------- aliases --------------------- #
-alias ll='ls -l'
+alias ll='ls -lAh --group-directories-first --color=auto'
 alias la='ls -A'
 alias l='ls -CF'
 alias reload='source $HOME/.bashrc'
@@ -235,8 +239,9 @@ parse_git_branch() {
   command -v git >/dev/null 2>&1 || return
 
   # Se estiver em um repositório git, mostra o branch. Caso contrário, não mostra nada.
-  git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo "git:$(git symbolic-ref --short HEAD)"
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo "branch:$(git symbolic-ref --short HEAD)"
 }
+GIT_PROMPT="\033[0;91m\$(parse_git_branch)\[\e[m\]"
 
 function lastcommand {
     history | tail -1 | cut -c 8-
@@ -251,7 +256,9 @@ function deleteprompt {
 
 PS0='\[$(deleteprompt)\]\$ $(lastcommand)\n\[${PS1:0:$((EXPS0=1,0))}\]'
 PROMPT_COMMAND='[ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'
+
+
 # Set the prompt to show user, host, current directory, and git branch if available
-PS1=" \[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] \033[0;91m\$(parse_git_branch)\[\e[m\]\n "
+PS1="\[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] $GIT_PROMPT\n\[\e[38;5;39m\]\$ \[\e[m\]"
 
 # =========================== Custom Prompt end =============================== #
