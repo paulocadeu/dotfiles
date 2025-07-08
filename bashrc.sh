@@ -232,33 +232,13 @@ normalize_filenames() {
   echo "Normalization complete."
 }
 
+# ========================== IMPORT CUSTOM SCRIPTS =========================== #
 
-# =========================== Custom Prompt =================================== #
-parse_git_branch() {
-  # Verifica se o comando git existe antes de tudo
-  command -v git >/dev/null 2>&1 || return
-
-  # Se estiver em um repositório git, mostra o branch. Caso contrário, não mostra nada.
-  git rev-parse --is-inside-work-tree >/dev/null 2>&1 && echo "branch:$(git symbolic-ref --short HEAD)"
-}
-GIT_PROMPT="\033[0;91m\$(parse_git_branch)\[\e[m\]"
-
-function lastcommand {
-    history | tail -1 | cut -c 8-
-}
-function deleteprompt {
-    n=${PS1@P}
-    n=${n//[^$'\n']}
-    n=${#n}
-    tput cuu $((n + 1))
-    tput ed
-}
-
-PS0='\[$(deleteprompt)\]\$ $(lastcommand)\n\[${PS1:0:$((EXPS0=1,0))}\]'
-PROMPT_COMMAND='[ "$EXPS0" = 0 ] && deleteprompt && echo -e "\$" || EXPS0=0'
-
-
-# Set the prompt to show user, host, current directory, and git branch if available
-PS1="\[\e[38;5;153m\]\u\[\e[m\] at \[\e[38;5;150m\]\h\[\e[m\] in \[\e[38;5;214m\]\w\[\e[m\] $GIT_PROMPT\n\[\e[38;5;39m\]\$ \[\e[m\]"
-
-# =========================== Custom Prompt end =============================== #
+# Import Docker management functions
+if [ -f "$HOME/dotfiles/scripts/docker.sh" ]; then
+    source "$HOME/dotfiles/scripts/docker.sh"
+fi
+# Import Prompt customization
+if [ -f "$HOME/dotfiles/scripts/prompt.sh" ]; then
+    source "$HOME/dotfiles/scripts/prompt.sh"
+fi
