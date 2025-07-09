@@ -233,7 +233,10 @@ normalize_filenames() {
 }
 
 # ========================== IMPORT CUSTOM SCRIPTS =========================== #
-
+# Import Git management functions
+if [ -f "$HOME/dotfiles/scripts/git.sh" ]; then
+    source "$HOME/dotfiles/scripts/git.sh"
+fi
 # Import Docker management functions
 if [ -f "$HOME/dotfiles/scripts/docker.sh" ]; then
     source "$HOME/dotfiles/scripts/docker.sh"
@@ -241,4 +244,5 @@ fi
 # Import Prompt customization
 if [ -f "$HOME/dotfiles/scripts/prompt.sh" ]; then
     source "$HOME/dotfiles/scripts/prompt.sh"
+    apply_prompt original
 fi
