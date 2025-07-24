@@ -14,6 +14,25 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 dnf check-update
 sudo dnf install code
 
+
+## Docker
+sudo dnf -y install dnf-plugins-core
+sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo docker run hello-world
+## docker post-install
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+## Brave Browser
+# https://brave.com/linux/
+curl -fsS https://dl.brave.com/install.sh | sh
+
+
+
+
 # Flatpak installs
 # https://flatpak.org/setup/Fedora/
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -36,4 +55,8 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 curl -o /tmp/Hack.zip -L https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip
 unzip /tmp/Hack.zip -d ~/.local/share/fonts/
 fc-cache -vf ~/.local/share/fonts/
+
+# Hyprland
+# template:
+# https://github.com/JaKooLit/Fedora-Hyprland
 
