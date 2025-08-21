@@ -130,7 +130,7 @@ extract() {
         echo "Usage: extract <archive_file>"
         return 1
     fi
-    
+
     if [ -f "$1" ]; then
         case $1 in
             *.tar.bz2)   tar xjf "$1"     ;;
@@ -177,7 +177,7 @@ search() {
         echo "Usage: search <search_term> [directory]"
         return 1
     fi
-    
+
     local search_dir="${2:-.}"
     grep -r "$1" "$search_dir" --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.vscode --exclude-dir=__pycache__ 2>/dev/null
 }
@@ -217,7 +217,7 @@ backup() {
         echo "Usage: backup <file_or_directory>"
         return 1
     fi
-    
+
     if [ -e "$1" ]; then
         local backup_name="$1.backup.$(date +%Y%m%d_%H%M%S)"
         cp -r "$1" "$backup_name"
@@ -236,11 +236,11 @@ sysinfo() {
     echo "Architecture: $(uname -m)"
     echo "Uptime: $(uptime -p 2>/dev/null || uptime)"
     echo "Load Average: $(uptime | awk -F'load average:' '{print $2}')"
-    
+
     if command_exists free; then
         echo "Memory: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
     fi
-    
+
     if command_exists df; then
         echo "Disk Usage:"
         df -h | grep -E '^/dev/' | awk '{print "  " $1 ": " $3 "/" $2 " (" $5 ")"}'
@@ -250,12 +250,12 @@ sysinfo() {
 # Network information
 netinfo() {
     echo "=== Network Information ==="
-    
+
     # Public IP
     if command_exists curl; then
         echo "Public IP: $(curl -s ifconfig.me 2>/dev/null || echo "Unable to fetch")"
     fi
-    
+
     # Local IPs
     echo "Local IPs:"
     if command_exists ip; then
@@ -263,32 +263,10 @@ netinfo() {
     elif command_exists ifconfig; then
         ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print "  " $2}'
     fi
-    
+
     # Active connections
     if command_exists netstat; then
         echo "Active connections: $(netstat -an | grep ESTABLISHED | wc -l)"
-    fi
-}
-
-# Quick file server
-serve() {
-    local port="${1:-8000}"
-    local directory="${2:-.}"
-    
-    if [ ! -d "$directory" ]; then
-        echo "Directory '$directory' not found"
-        return 1
-    fi
-    
-    echo "Starting HTTP server on port $port in directory: $directory"
-    echo "Access at: http://localhost:$port"
-    
-    if command_exists python3; then
-        cd "$directory" && python3 -m http.server "$port"
-    elif command_exists python; then
-        cd "$directory" && python -m SimpleHTTPServer "$port"
-    else
-        echo "Python is required for serve function"
     fi
 }
 
@@ -310,7 +288,7 @@ sizeof() {
         echo "Usage: sizeof <file_or_directory>"
         return 1
     fi
-    
+
     if [ -e "$1" ]; then
         du -sh "$1"
     else
@@ -321,7 +299,7 @@ sizeof() {
 # Quick note taking
 note() {
     local note_file="$HOME/.notes"
-    
+
     if [ -z "$1" ]; then
         # Show existing notes
         if [ -f "$note_file" ]; then
