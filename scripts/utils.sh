@@ -276,7 +276,7 @@ genpass() {
     if command_exists openssl; then
         openssl rand -base64 "$length" | cut -c1-"$length"
     elif [ -f /dev/urandom ]; then
-        tr -dc 'A-Za-z0-9!@#$%^&*()_+=' < /dev/urandom | head -c "$length"; echo
+        tr -dc 'A-Za-z0-9!@#$%^&*()_+=' < /dev/urandom | head -c "$length"; echo´
     else
         echo "Unable to generate password - openssl or /dev/urandom required"
     fi
