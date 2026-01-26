@@ -71,8 +71,8 @@ shopt -s nocaseglob
 
 # ========================== ENVIRONMENT VARIABLES ========================== #
 # Default editor
-export EDITOR=nano
-export VISUAL=nano
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Less configuration for better paging
 export LESS='-R -i -M -S -x4'
@@ -125,8 +125,6 @@ alias lz='ls -lAhS'  # Sort by size
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias ~='cd ~'
-alias -- -='cd -'
 
 # Safety aliases
 alias rm='rm -i'
@@ -171,13 +169,14 @@ alias json='python3 -m json.tool'
 alias ncspot='flatpak run io.github.hrkfdn.ncspot'
 alias ollama_stop='systemctl stop ollama'
 alias ollama_start='systemctl start ollama'
+alias vim='nvim'
 
 # ========================== WELCOME MESSAGE ============================= #
 # Show system info on login (only for interactive shells)
 if [[ $- == *i* ]] && [[ -z "$TMUX" ]]; then
-    echo "Welcome to $(hostname)!"
-    echo "Today is $(date '+%A, %B %d, %Y')"
-    echo "Uptime: $(uptime -p)"
+    echo " Welcome to $(hostname)!"
+    echo " $(date '+%A, %d de %B de %Y')"
+    echo " $(date '+%H:%M:%S'), Uptime: $(uptime -p)"
     echo ""
 fi
 
