@@ -71,8 +71,8 @@ shopt -s nocaseglob
 
 # ========================== ENVIRONMENT VARIABLES ========================== #
 # Default editor
-export EDITOR=nvim
-export VISUAL=nvim
+export EDITOR=vim
+export VISUAL=vim
 
 # Less configuration for better paging
 export LESS='-R -i -M -S -x4'
@@ -169,7 +169,7 @@ alias json='python3 -m json.tool'
 alias ncspot='flatpak run io.github.hrkfdn.ncspot'
 alias ollama_stop='systemctl stop ollama'
 alias ollama_start='systemctl start ollama'
-alias vim='nvim'
+alias vim='vim'
 
 # ========================== WELCOME MESSAGE ============================= #
 # Show system info on login (only for interactive shells)
